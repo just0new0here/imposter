@@ -19,39 +19,63 @@ const WORDS = {
 
 const PROMPT_PAIRS = {
   Funny: [
-    ['Where would you hide during a zombie apocalypse?', 'Where would you go for the most relaxing vacation?'],
-    ['What would be the worst thing to hear on an airplane?', 'What would be the best thing to hear on an airplane?'],
-    ['What is something you would never want your parents to find?', 'What is something you would be excited to show your parents?'],
-    ['What would you do first if you became invisible?', 'What would you do first if you became famous?'],
-    ['What is the weirdest thing to bring on a first date?', 'What is the best thing to bring on a first date?'],
-    ['Where would you bury a treasure chest?', 'Where would you plan a picnic?'],
-    ['What would be a terrible superpower?', 'What would be an amazing superpower?'],
-    ['What would you buy if you had $10,000 for one ridiculous purchase?', 'What would you buy if you had $10,000 for one useful purchase?']
+    ['What food would you order after a really long day?', 'What food would you order at 1 a.m.?'],
+    ['What would you bring on a road trip to keep everyone entertained?', 'What would you bring to a sleepover to keep everyone entertained?'],
+    ['What excuse would you use to get out of an awkward plan?', 'What excuse would you use if you were late to something important?'],
+    ['What animal would be the funniest roommate?', 'What animal would be the funniest coworker?'],
+    ['What would you buy with $50 just to make the day better?', 'What would you buy with $50 before a weekend away?'],
+    ['What object would be useful if you were locked in a mall overnight?', 'What object would be useful if you were stuck at school overnight?'],
+    ['What would you wear to make your friends laugh?', 'What would you wear if you lost a silly bet?'],
+    ['What would you do first if your phone died for the whole day?', 'What would you do first if the internet stopped working for the whole day?'],
+    ['What snack would you bring to a movie marathon?', 'What snack would you bring to a late-night gaming session?'],
+    ['What would be funny to hear someone say in a very serious meeting?', 'What would be funny to hear someone say during a school presentation?']
   ],
   Friends: [
-    ['Who in the group would survive longest on a deserted island?', 'Who in the group would get eliminated first on a reality show?'],
-    ['Who in the group would be most likely to become famous?', 'Who in the group would be most likely to disappear from social media?'],
-    ['Who would you trust to plan the entire road trip?', 'Who would you least trust to read the map on a road trip?'],
-    ['Who would be best at talking their way out of trouble?', 'Who would be most likely to accidentally get everyone in trouble?'],
-    ['Who would you call first if your car broke down?', 'Who would you call first if you wanted to do something spontaneous?'],
-    ['Who is most likely to laugh at the worst possible moment?', 'Who is most likely to stay serious no matter what?']
+    ['Who would you trust to pick the music for a road trip?', 'Who would you trust to choose where everyone eats on a road trip?'],
+    ['Who would be most likely to accidentally miss a flight?', 'Who would be most likely to forget something important before a trip?'],
+    ['Who would you call if you needed help moving something heavy?', 'Who would you call if your car got stuck?'],
+    ['Who would do best on a game show?', 'Who would do best on a reality competition?'],
+    ['Who would you trust with your phone unlocked for an hour?', 'Who would you trust to keep a secret for a week?'],
+    ['Who would be most likely to start a random business?', 'Who would be most likely to turn a hobby into a job?'],
+    ['Who would be the best person to get lost with?', 'Who would be the best person to be stuck at an airport with?'],
+    ['Who would be most likely to stay up until sunrise?', 'Who would be most likely to suggest a late-night adventure?'],
+    ['Who would you want on your team for trivia?', 'Who would you want on your team for an escape room?'],
+    ['Who would take the longest to get ready for a night out?', 'Who would take the longest to pack for a weekend trip?']
   ],
   Opinions: [
-    ['What food is massively overrated?', 'What food deserves way more hype?'],
-    ['What is the most annoying thing people do at the movies?', 'What is the best part of going to the movies?'],
-    ['What app could you live without?', 'What app would be hardest to live without?'],
-    ['What trend needs to disappear?', 'What old trend should come back?'],
-    ['What is the worst place to be stuck for three hours?', 'What place could you happily spend three hours?'],
-    ['What is the most overrated school subject?', 'What school subject is more useful than people think?']
+    ['What food is worth driving 30 minutes for?', 'What food is worth waiting 45 minutes in line for?'],
+    ['What app do you open when you are bored?', 'What app do you open when you have five minutes to kill?'],
+    ['What movie snack is essential?', 'What road-trip snack is essential?'],
+    ['What is something worth paying extra for?', 'What is something you would rather buy the nicer version of?'],
+    ['What school subject depends most on a good teacher?', 'What school subject is hardest to teach yourself?'],
+    ['What is the first thing you notice in a hotel room?', 'What is the first thing you notice in an Airbnb?'],
+    ['What makes a hangout instantly better?', 'What makes a road trip instantly better?'],
+    ['What food tastes especially good late at night?', 'What food tastes especially good the next day?'],
+    ['What is something people always forget to pack?', 'What is something people always end up buying on vacation?'],
+    ['What is something you would happily wait in line for?', 'What is something you would make a reservation for?']
   ],
   Situations: [
-    ['What would you grab first if your house had to be evacuated?', 'What would you grab first when packing for a weekend trip?'],
-    ['What is the first thing you would do after winning the lottery?', 'What is the first thing you would do after losing your phone?'],
-    ['What would you wear to sneak into a fancy event?', 'What would you wear to your dream concert?'],
-    ['What would you do if you woke up in another country?', 'What would you do if you woke up with a completely free day?'],
-    ['What item would help most in a power outage?', 'What item would help most at a beach day?'],
-    ['Where would you go if you had to avoid everyone for a day?', 'Where would you go if you wanted to meet as many people as possible?']
+    ['What would you grab first if you had ten minutes to pack for a weekend?', 'What would you grab first if you had ten minutes to pack for an overnight stay?'],
+    ['Where would you go if you had three free hours downtown?', 'Where would you go if your plans got cancelled downtown?'],
+    ['What would you buy first if you arrived somewhere and your luggage was lost?', 'What would you buy first if you had to stay somewhere one unexpected extra night?'],
+    ['What would you do first if you found $100 on the ground?', 'What would you do first if someone gave you a surprise $100?'],
+    ['What would you bring to make a long wait easier?', 'What would you bring to make a long drive easier?'],
+    ['Where would you charge your phone if you were stranded downtown?', 'Where would you sit for an hour if you were stranded downtown?'],
+    ['What would you do if you got to an event an hour early?', 'What would you do if your ride was an hour late?'],
+    ['What item would you want if the power went out tonight?', 'What item would you want if you had to sleep somewhere unfamiliar tonight?'],
+    ['What would you bring if the weather forecast looked unreliable?', 'What would you bring if you knew you would be outside all day?'],
+    ['What would you buy at a convenience store before a long drive?', 'What would you buy at a convenience store before a long night?']
   ]
+};
+
+const WORD_HINTS = {
+  'Pizza':'Italy','Sushi':'Japan','Tacos':'Mexico','Pancakes':'Syrup','Poutine':'Quebec','Burger':'Grill','Ramen':'Broth','Ice Cream':'Dessert','Popcorn':'Cinema','Donut':'Glazed','Nachos':'Chips','Waffles':'Belgium','Steak':'Grill','French Fries':'Potato','Mac and Cheese':'Pasta','Chicken Wings':'Buffalo','Brownie':'Chocolate','Caesar Salad':'Lettuce',
+  'Airport':'Flight','Beach':'Sand','Mall':'Shopping','Movie Theatre':'Popcorn','School':'Classes','Hospital':'Doctors','Gym':'Workout','Amusement Park':'Rides','Museum':'Exhibits','Hotel':'Vacation','Library':'Books','Coffee Shop':'Caffeine','Grocery Store':'Cart','Campground':'Tent','Aquarium':'Fish','Bowling Alley':'Pins','Ski Hill':'Snow','Stadium':'Fans',
+  'Toothbrush':'Bristles','Backpack':'School','Headphones':'Music','Camera':'Photos','Umbrella':'Rain','Remote Control':'Television','Water Bottle':'Hydration','Wallet':'Money','Keyboard':'Typing','Flashlight':'Dark','Sunglasses':'Sun','Pillow':'Sleep','Vacuum':'Cleaning','Microwave':'Kitchen','Watch':'Time','Charger':'Battery','Mirror':'Reflection','Blanket':'Warmth',
+  'Minecraft':'Blocks','Fortnite':'Battle','Valorant':'Agents','Overwatch':'Heroes','Mario Kart':'Racing','GTA V':'Crime','Roblox':'Worlds','Among Us':'Spaceship','Rocket League':'Soccer','Call of Duty':'Warfare','The Sims':'Life','Terraria':'Digging','Skyrim':'Dragons','Red Dead Redemption':'Western','Pokémon':'Creatures','Forza Horizon':'Cars','God of War':'Mythology','Spider-Man':'Webs',
+  'The Avengers':'Heroes','Shrek':'Ogre','Stranger Things':'SciFi','The Office':'Workplace','Frozen':'Snow','Harry Potter':'Magic','Breaking Bad':'Chemistry','The Simpsons':'Yellow','Toy Story':'Toys','Star Wars':'Space','Jurassic Park':'Dinosaurs','Wednesday':'Gothic','The Batman':'Gotham','Avatar':'Pandora','Friends':'Sitcom','The Hunger Games':'Arena','Cars':'Racing','SpongeBob':'Ocean',
+  'Penguin':'Antarctica','Dolphin':'Ocean','Giraffe':'Tall','Shark':'Teeth','Panda':'Bamboo','Elephant':'Trunk','Cheetah':'Speed','Owl':'Night','Kangaroo':'Australia','Octopus':'Tentacles','Gorilla':'Jungle','Polar Bear':'Arctic','Raccoon':'Trash','Wolf':'Pack','Turtle':'Shell','Peacock':'Feathers','Koala':'Eucalyptus','Crocodile':'Swamp',
+  'Homework':'Assignment','Cafeteria':'Lunch','Exam':'Test','Locker':'Hallway','Teacher':'Classroom','Field Trip':'Bus','Gym Class':'Sports','Group Project':'Teamwork','School Bus':'Yellow','Detention':'Trouble','Graduation':'Diploma','Textbook':'Chapters','Presentation':'Slides','Substitute Teacher':'Temporary','Fire Drill':'Alarm','Yearbook':'Photos','Lunch Break':'Food'
 };
 
 const MIME = { '.html':'text/html; charset=utf-8', '.css':'text/css; charset=utf-8', '.js':'application/javascript; charset=utf-8', '.webmanifest':'application/manifest+json', '.svg':'image/svg+xml' };
@@ -94,7 +118,7 @@ function privateRound(room, player) {
     ? { role:'IMPOSTER', category:d.category, prompt:d.imposterPrompt }
     : { role:'CREW', category:d.category, prompt:d.crewPrompt };
   return player.id === d.imposterId
-    ? { role:'IMPOSTER', category:d.category, hint:room.settings.imposterHint ? d.category : null }
+    ? { role:'IMPOSTER', category:d.category, hint:room.settings.imposterHint ? d.hint : null }
     : { role:'CREW', category:d.category, word:d.word };
 }
 function startRound(room) {
@@ -108,7 +132,8 @@ function startRound(room) {
     room.roundData = { mode:'prompt', category, crewPrompt:flip?pair[0]:pair[1], imposterPrompt:flip?pair[1]:pair[0], imposterId:imposter.id };
   } else {
     const category = chooseCategory(room.settings.wordCategory, WORDS);
-    room.roundData = { mode:'classic', category, word:pick(WORDS[category]), imposterId:imposter.id };
+    const word = pick(WORDS[category]);
+    room.roundData = { mode:'classic', category, word, hint:WORD_HINTS[word] || category, imposterId:imposter.id };
   }
   room.round += 1; room.phase = 'playing'; room.votes = {}; room.lastResult = null;
   room.players.filter(p => p.connected).forEach(p => sendSSE(p, 'private', privateRound(room, p)));
@@ -124,7 +149,16 @@ function readBody(req) {
   return new Promise((resolve, reject) => {
     let raw = '';
     req.on('data', c => { raw += c; if (raw.length > 100000) req.destroy(); });
-    req.on('end', () => { try { resolve(raw ? JSON.parse(raw) : {}); } catch { reject(new Error('Invalid request.')); } });
+    req.on('end', () => {
+      try {
+        if (!raw) return resolve({});
+        const type = String(req.headers['content-type'] || '').split(';')[0].trim().toLowerCase();
+        if (type === 'application/x-www-form-urlencoded' || type === 'text/plain') {
+          return resolve(Object.fromEntries(new URLSearchParams(raw)));
+        }
+        resolve(JSON.parse(raw));
+      } catch { reject(new Error('Invalid request.')); }
+    });
     req.on('error', reject);
   });
 }
