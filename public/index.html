@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0d0f15" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>Imposter Party</title>
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <main class="shell">
+    <section id="homeScreen" class="screen active">
+      <div class="brand">
+        <div class="logo">?</div>
+        <div>
+          <h1>Imposter Party</h1>
+          <p class="sub">One room. Everyone's phone. One liar.</p>
+        </div>
+      </div>
+
+      <div class="card hero-card">
+        <label for="nameInput">Your nickname</label>
+        <input id="nameInput" maxlength="20" autocomplete="nickname" placeholder="e.g. Josh" />
+        <button id="createBtn" class="btn primary">Create a room</button>
+        <div class="or"><span>or join friends</span></div>
+        <div class="join-row">
+          <input id="roomInput" maxlength="5" autocapitalize="characters" placeholder="ROOM CODE" />
+          <button id="joinBtn" class="btn">Join</button>
+        </div>
+        <p id="homeError" class="error"></p>
+      </div>
+
+      <div class="mini-grid">
+        <div class="mini-card"><b>Classic</b><span>Everyone gets the word except the impostor.</span></div>
+        <div class="mini-card"><b>Prompt Mix</b><span>Everyone answers a question; the impostor gets a different one.</span></div>
+      </div>
+    </section>
+
+    <section id="roomScreen" class="screen">
+      <header class="room-head">
+        <div>
+          <span class="eyebrow">ROOM</span>
+          <button id="copyCodeBtn" class="room-code" aria-label="Copy room code">-----</button>
+        </div>
+        <div class="pill" id="roundPill">Lobby</div>
+      </header>
+
+      <div class="card" id="lobbyCard">
+        <div class="section-title">
+          <h2>Players</h2>
+          <span id="playerCount">1/16</span>
+        </div>
+        <div id="playersList" class="players"></div>
+      </div>
+
+      <div class="card" id="settingsCard">
+        <div class="section-title"><h2>Game setup</h2><span id="hostOnlyNote"></span></div>
+        <div class="segmented" id="modeSegment">
+          <button data-mode="classic" class="selected">Classic Word</button>
+          <button data-mode="prompt">Prompt Mix</button>
+        </div>
+
+        <div id="classicSettings" class="setting-block">
+          <label>Word category</label>
+          <select id="wordCategory">
+            <option>Random</option><option>Food</option><option>Places</option><option>Objects</option><option>Games</option><option>Movies & TV</option><option>Animals</option><option>School</option>
+          </select>
+          <label class="toggle-row"><span>Give impostor the category as a hint</span><input id="imposterHint" type="checkbox" checked /></label>
+        </div>
+
+        <div id="promptSettings" class="setting-block hidden">
+          <label>Prompt category</label>
+          <select id="promptCategory">
+            <option>Random</option><option>Funny</option><option>Friends</option><option>Opinions</option><option>Situations</option>
+          </select>
+          <p class="help">Most players get one question. The impostor gets a similar-but-different question and has to blend in.</p>
+        </div>
+      </div>
+
+      <button id="startBtn" class="btn primary big hidden">Start round</button>
+
+      <div id="waitingCard" class="card center hidden">
+        <div class="spinner"></div>
+        <h2>Waiting for the host</h2>
+        <p>The round will appear on everyone's phone at the same time.</p>
+      </div>
+
+      <div id="roleCard" class="card role-card hidden">
+        <div class="eyebrow">YOUR SECRET</div>
+        <div id="secretCover" class="secret-cover">
+          <div class="lock">👁️</div>
+          <h2>Keep your screen private</h2>
+          <p>Tap below when nobody else can see.</p>
+          <button id="revealMineBtn" class="btn primary">Reveal mine</button>
+        </div>
+        <div id="secretContent" class="hidden"></div>
+      </div>
+
+      <div id="gameActions" class="hidden">
+        <div class="card">
+          <div class="section-title"><h2>Vote</h2><span id="voteStatus">0 votes</span></div>
+          <p class="help">After everyone gives their clue or answer, pick who you think is the impostor.</p>
+          <div id="voteList" class="vote-grid"></div>
+        </div>
+        <button id="revealResultBtn" class="btn danger hidden">Reveal impostor</button>
+      </div>
+
+      <div id="resultsCard" class="card results hidden"></div>
+      <button id="nextRoundBtn" class="btn primary big hidden">Next round</button>
+    </section>
+
+    <div id="toast" class="toast"></div>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>
