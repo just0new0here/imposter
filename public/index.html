@@ -57,6 +57,12 @@
         <div id="playersList" class="players"></div>
       </div>
 
+      <div id="scoreboardCard" class="card hidden">
+        <div class="section-title"><h2>Scoreboard</h2><span>Game total</span></div>
+        <div id="scoreboardList" class="scoreboard-list"></div>
+        <p class="help score-help">Crew: +1 for correctly voting the impostor. Impostor: +1 for every vote fooled onto someone else.</p>
+      </div>
+
       <div class="card" id="settingsCard">
         <div class="section-title"><h2>Game setup</h2><span id="hostOnlyNote"></span></div>
         <div class="segmented" id="modeSegment">
@@ -111,6 +117,7 @@
 
       <div id="resultsCard" class="card results hidden"></div>
       <button id="nextRoundBtn" class="btn primary big hidden">Next round</button>
+      <button id="leaveBtn" class="btn leave-btn">Leave session</button>
     </section>
 
     <div id="toast" class="toast"></div>

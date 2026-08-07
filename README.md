@@ -10,6 +10,8 @@ A mobile-first multiplayer Imposter game. Everyone joins the same room from thei
 - Categories
 - Private role/prompt reveal on each phone
 - Voting and result reveal
+- Persistent in-room scoreboard between rounds
+- Leave-session button with automatic host handoff
 - Reconnects after a page refresh
 - Invite links prefill the room code
 - No accounts, API keys, or npm dependencies

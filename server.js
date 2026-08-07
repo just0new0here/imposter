@@ -77,7 +77,7 @@ function pub(room) {
   return {
     code: room.code, hostId: room.hostId, phase: room.phase, round: room.round,
     settings: room.settings,
-    players: room.players.map(p => ({ id:p.id, name:p.name, connected:p.connected })),
+    players: room.players.map(p => ({ id:p.id, name:p.name, connected:p.connected, score:p.score || 0 })),
     votesCast: Object.keys(room.votes || {}).length
   };
 }
@@ -110,7 +110,7 @@ function startRound(room) {
     const category = chooseCategory(room.settings.wordCategory, WORDS);
     room.roundData = { mode:'classic', category, word:pick(WORDS[category]), imposterId:imposter.id };
   }
-  room.round += 1; room.phase = 'playing'; room.votes = {};
+  room.round += 1; room.phase = 'playing'; room.votes = {}; room.lastResult = null;
   room.players.filter(p => p.connected).forEach(p => sendSSE(p, 'private', privateRound(room, p)));
   emitRoom(room);
 }
@@ -140,8 +140,8 @@ async function handleApi(req, res, pathname) {
     const b = await readBody(req);
     if (pathname === '/api/create') {
       const name = cleanName(b.name); if (!name) throw new Error('Enter a nickname.');
-      const code = makeCode(), player = { id:id(), name, connected:true, stream:null, streamToken:null };
-      const room = { code, hostId:player.id, players:[player], phase:'lobby', round:0, roundData:null, votes:{}, settings:{ mode:'classic', wordCategory:'Random', promptCategory:'Random', imposterHint:true }, updatedAt:Date.now() };
+      const code = makeCode(), player = { id:id(), name, connected:true, stream:null, streamToken:null, score:0 };
+      const room = { code, hostId:player.id, players:[player], phase:'lobby', round:0, roundData:null, votes:{}, lastResult:null, settings:{ mode:'classic', wordCategory:'Random', promptCategory:'Random', imposterHint:true }, updatedAt:Date.now() };
       rooms.set(code, room); return json(res,200,{ok:true,room:pub(room),playerId:player.id});
     }
     if (pathname === '/api/join') {
@@ -150,7 +150,7 @@ async function handleApi(req, res, pathname) {
       if (room.phase !== 'lobby') throw new Error('A round is already running. Join after this round.');
       if (room.players.filter(p=>p.connected).length >= 16) throw new Error('This room is full.');
       if (room.players.some(p=>p.connected && p.name.toLowerCase()===name.toLowerCase())) throw new Error('That nickname is already in the room.');
-      const player = { id:id(), name, connected:true, stream:null, streamToken:null }; room.players.push(player); emitRoom(room);
+      const player = { id:id(), name, connected:true, stream:null, streamToken:null, score:0 }; room.players.push(player); emitRoom(room);
       return json(res,200,{ok:true,room:pub(room),playerId:player.id});
     }
     if (pathname === '/api/rejoin') {
@@ -172,13 +172,41 @@ async function handleApi(req, res, pathname) {
       if(!room.players.some(p=>p.id===b.targetId&&p.connected)) throw new Error('Player not found.'); room.votes[player.id]=b.targetId; emitRoom(room); return json(res,200,{ok:true});
     }
     if (pathname === '/api/reveal') {
-      const {room,player}=auth(b); if(player.id!==room.hostId) throw new Error('Only the host can reveal the result.'); if(!room.roundData) throw new Error('No active round.');
-      room.phase='results'; const counts={}; Object.values(room.votes).forEach(v=>counts[v]=(counts[v]||0)+1); const d=room.roundData;
-      const result={ imposterId:d.imposterId, word:d.mode==='classic'?d.word:null, crewPrompt:d.mode==='prompt'?d.crewPrompt:null, imposterPrompt:d.mode==='prompt'?d.imposterPrompt:null, votes:counts };
-      broadcast(room,'results',result); emitRoom(room); return json(res,200,{ok:true});
+      const {room,player}=auth(b); if(player.id!==room.hostId) throw new Error('Only the host can reveal the result.'); if(room.phase!=='playing'||!room.roundData) throw new Error('No active round.');
+      room.phase='results';
+      const counts={}; Object.values(room.votes).forEach(v=>counts[v]=(counts[v]||0)+1); const d=room.roundData;
+      const points={}; room.players.forEach(p=>points[p.id]=0);
+      for(const p of room.players){
+        if(p.id===d.imposterId){
+          const fooled=Object.entries(room.votes).filter(([voterId,targetId])=>voterId!==d.imposterId&&targetId!==d.imposterId).length;
+          points[p.id]=fooled;
+        } else if(room.votes[p.id]===d.imposterId) points[p.id]=1;
+        p.score=(p.score||0)+points[p.id];
+      }
+      const imposter=room.players.find(p=>p.id===d.imposterId);
+      const result={ imposterId:d.imposterId, imposterName:imposter?.name||'Unknown', word:d.mode==='classic'?d.word:null, crewPrompt:d.mode==='prompt'?d.crewPrompt:null, imposterPrompt:d.mode==='prompt'?d.imposterPrompt:null, votes:counts, points };
+      room.lastResult=result; emitRoom(room); broadcast(room,'results',result); return json(res,200,{ok:true});
     }
     if (pathname === '/api/next') {
-      const {room,player}=auth(b); if(player.id!==room.hostId) throw new Error('Only the host can continue.'); room.phase='lobby'; room.roundData=null; room.votes={}; emitRoom(room); return json(res,200,{ok:true});
+      const {room,player}=auth(b); if(player.id!==room.hostId) throw new Error('Only the host can continue.'); if(room.phase!=='results') throw new Error('Reveal the result first.'); room.phase='lobby'; room.roundData=null; room.votes={}; room.lastResult=null; emitRoom(room); return json(res,200,{ok:true});
+    }
+    if (pathname === '/api/leave') {
+      const {room,player}=auth(b);
+      const wasHost=player.id===room.hostId;
+      const wasImposter=room.phase==='playing'&&room.roundData?.imposterId===player.id;
+      player.streamToken=id();
+      if(player.stream&&!player.stream.writableEnded){ try{ player.stream.end(); }catch{} }
+      player.stream=null; player.connected=false;
+      room.players=room.players.filter(p=>p.id!==player.id);
+      delete room.votes[player.id];
+      for(const [voterId,targetId] of Object.entries(room.votes)) if(targetId===player.id) delete room.votes[voterId];
+      if(room.players.length===0){ rooms.delete(room.code); return json(res,200,{ok:true}); }
+      if(wasHost){ const next=room.players.find(p=>p.connected)||room.players[0]; room.hostId=next.id; }
+      if(wasImposter || (room.phase==='playing'&&room.players.filter(p=>p.connected).length<3)){
+        room.phase='lobby'; room.roundData=null; room.votes={}; room.lastResult=null;
+        broadcast(room,'notice',{message:wasImposter?'The impostor left, so the round was cancelled.':'Not enough players remain, so the round was cancelled.'});
+      }
+      emitRoom(room); return json(res,200,{ok:true});
     }
     return json(res,404,{ok:false,error:'Not found.'});
   } catch (e) { return json(res,400,{ok:false,error:e.message || 'Request failed.'}); }
@@ -192,6 +220,7 @@ function handleEvents(req, res, url) {
   res.write('retry: 1000\n\n');
   const token=id(); player.stream=res; player.streamToken=token; player.connected=true; sendSSE(player,'room',pub(room));
   if(room.phase==='playing'&&room.roundData) sendSSE(player,'private',privateRound(room,player));
+  if(room.phase==='results'&&room.lastResult) sendSSE(player,'results',room.lastResult);
   req.on('close',()=>setTimeout(()=>{
     if(player.streamToken!==token) return;
     player.stream=null; player.connected=false;
